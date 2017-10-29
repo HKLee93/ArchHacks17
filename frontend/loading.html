@@ -7,6 +7,12 @@
 <body>
 <div class="loader"></div>
 <div class="loader-text"></div>
+<div class="calibration">
+  Calibration process: Please hold the device still for five seconds.
+</div>
+<div class="calibration-counter">
+
+</div>
 
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.2.min.js"></script>
@@ -25,6 +31,11 @@ function fetchAJAXcallBack(event) {
   var jsonData = JSON.parse(event.target.responseText);
   if(jsonData.success){
     window.location.href = "visualization.html";
+    return;
+  }
+  else{
+    window.location.href = "loading.html";
+    return;
   }
 }
 

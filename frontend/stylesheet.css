@@ -90,7 +90,7 @@ div{
 }
 .loader-text{
   position: absolute;
-  top: 60%;
+  top: 65%;
   align-self: center;
   margin: auto;
 }
@@ -98,10 +98,13 @@ div{
   content: "M e a s u r i n g";
   font-weight: bold;
   font-size: 20px;
+  opacity: 0;
   animation: loading-text 3s infinite;
+  animation-delay: 7s;
 }
 @keyframes loading-text{
   0% {content: "M"}
+  0% {opacity: 1}
   10%{content: "M e"}
   20%{content: "M e a"}
   30%{content: "M e a s"}
@@ -112,10 +115,51 @@ div{
   80%{content: "M e a s u r i n g "}
   90%{content: "M e a s u r i n g ."}
   100%{content: "M e a s u r i n g . . "}
+  100%{opacity: 1}
 }
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+/*** CALIBRATION PAGE ***/
+.calibration{
+  position: absolute;
+  top: 25%;
+  align-self: center;
+  margin: auto;
+  font-size: 20px;
+  font-weight: 600;
+  animation: disappear 1s forwards;
+  animation-delay: 7s;
+}
+.calibration-counter{
+  font-size: 20px;
+  position: absolute;
+  top: 65%;
+  align-self: center;
+  margin: auto;
+}
+.calibration-counter:after{
+  content: "5";
+  font-weight: bold;
+  font-size: 20px;
+  animation: counter 5s ;
+  animation-fill-mode: forwards;
+  animation-delay: 2s;
+}
+@keyframes disappear{
+  0% {opacity: 0}
+  100% {opacity: 0}
+}
+@keyframes counter{
+  0% {content: "5"}
+  20% {content: "4"}
+  40% {content: "3"}
+  60% {content: "2"}
+  80% {content: "1"}
+  99% {content: "1"}
+  99% {opacity: 1}
+  100% {opacity: 0}
 }
 /*** VISUALIZATION PAGE ***/
 .results{
@@ -123,31 +167,51 @@ div{
 }
 img{
   width: auto;
-  height: 500px;
+  height: 400px;
 }
 #person{
   position: absolute;
-  top: 20vh;
-  right: 27vw;
+  left: 22vw;
+  top: 35%;
 }
 #graph{
   position: absolute;
-  left: 13vw;
-  top: 10%;
+  right: 10vw;
+  top: 18%;
 }
 #degreeInfo{
   position: absolute;
   top: 40%;
-  left: 25%;
-  color: #e27260;
+  left: 20%;
+  color: rgb(204, 72, 72);
   font-weight: 600;
+  width: 200px;
 }
 svg{
-  position: fixed;
-  top: 400px;
-  right: 370px;
+  position: absolute;
+  top: 50%;
+  left: 20%;
 }
 .he{
-  padding-left: 100px;
-  font-size: 70px;
+  padding-left: 50px;
+  font-size: 50px;
+}
+.restart{
+  position: fixed;
+  top: 80px;
+  right: 80px;
+  font-weight: 600;
+}
+.restart:hover{
+  color: rgb(204, 72, 72);
+  cursor: pointer;
+  font-style: italic;
+}
+#textInfo{
+  font-size: 25px;
+  width: 450px;
+  font-weight: 600;
+  position: absolute;
+  top: 25vh;
+  left: 48vw;
 }

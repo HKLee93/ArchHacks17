@@ -3,13 +3,14 @@
 $dataReady = false;
 while(!$dataReady){
 
-  if(file_exists(__DIR__ . "/vis_info2.csv")){
+  $contents = file_get_contents("data.csv");
+  if($contents != ""){
     $dataReady = true;
   }
   else{
     $dataReady = false;
   }
-  
+
 }
 echo json_encode(array("success" => true, "message" => "success"));
 exit;

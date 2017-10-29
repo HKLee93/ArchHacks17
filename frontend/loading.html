@@ -25,6 +25,11 @@ function fetchAJAXcallBack(event) {
   var jsonData = JSON.parse(event.target.responseText);
   if(jsonData.success){
     window.location.href = "visualization.html";
+    return;
+  }
+  else{
+    window.location.href = "loading.html";
+    return;
   }
 }
 

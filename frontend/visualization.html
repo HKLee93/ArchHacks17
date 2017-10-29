@@ -9,71 +9,129 @@
   <div class="results">
     <div id="graph"></div>
     <div id="person" class="person"><img src="person.png" /></div>
+    <div id="textInfo"></div>
   </div>
-
-  <!--- restart and change response.txt to false -->
+  <div class="restart" onclick="restart()">
+    RESTART
+  </div>
 
   <script src="https://d3js.org/d3.v4.js"></script>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.2.min.js"></script>
   <script>
 
-  Plotly.d3.csv("vis_info2.csv", function(err, rows){
-    function unpack(rows, key) {
-      return rows.map(function(row)
-      { return row[key]; }); }
+  function restart(){
+    window.location.href = "restart.php";
+    return;
+  }
 
-      var x = unpack(rows , 'x');
-      var y = unpack(rows , 'y');
-      var z = unpack(rows , 'z');
-      Plotly.plot('graph', [{
-        type: 'scatter3d',
-        mode: 'lines',
-        x: x,
-        y: y,
-        z: z,
-        opacity: 1,
-        line: {
-          width: 2,
-          color: "rgb(60, 70, 91)",
-          reversescale: false
+  //array of accel data:
+  var x_ = [];
+  var y_ = [];
+  var z_ = [];
+  var final_x, final_y, angle;
+
+  function processData(x_, y_, z_, d){
+    if(d.x == "Xfinal"){
+      final_x = parseFloat(d.y);
+    }
+    else if(d.x == "Yfinal"){
+      final_y = parseFloat(d.y);
+    }
+    else if(d.x == "anglefinal"){
+      angle = parseFloat(d.y);
+    }
+    else{
+      var x = d.x;
+
+      x_.push(parseFloat(x.replace("_", ".")));
+      y_.push(parseFloat(d.y));
+      z_.push((Math.random()*1.0)+0.96);
+    }
+  }
+
+  d3.csv("data.csv", function (data){
+
+    //processes given data:
+    data.forEach(function (d){
+      processData(x_, y_, z_, d);
+
+    });
+
+    //plots the 3-d graph:
+    Plotly.plot('graph', [{
+      type: 'scatter3d',
+      mode: 'lines',
+      x: x_,
+      y: y_,
+      z: z_,
+      opacity: 1,
+      line: {
+        width: 2,
+        color: "rgb(60, 70, 91)",
+        reversescale: false
+        // colorscale: 'Viridis'
+      }
+    }], {
+      paper_bgcolor: 'rgba(0,0,0,0)',
+      plot_bgcolor: 'rgba(0,0,0,0)',
+      height: 600,
+      width: 600,
+      scene: {
+        xaxis: {
+          // nticks: 8,
+          // range: [-1, 1],
+        },
+        yaxis: {
+          // nticks: 8,
+          // range: [-1, 1],
+        },
+        zaxis: {
+          nticks: 8,
+          range: [-2, 3],
         }
-      }], {
-        paper_bgcolor: 'rgba(0,0,0,0)',
-        plot_bgcolor: 'rgba(0,0,0,0)',
-        height: 600,
-        width: 600
-      });
+      }
     });
 
-    d3.csv("vis_info2.csv", function(d) {
-      return {
-        degree : d.degree
-      };
-    }, function(data) {
-      var degree = data[0].degree;
-      console.log(degree);
-      d3.select(".person")
-      .append("p").text("degree: " + data[0].degree).attr("id", "degreeInfo");
-      d3.select(".person")
-      .append("svg").attr("width", 100).attr("height", 100).append("line")
-      .attr("class", "line").attr("stroke", "#e27260").attr("stroke-width", "3px")
-      .attr("x1", 0)
-      .attr("x2", 95)
-      .attr("y1", 3)
-      .attr("y2", degree);
-    });
+    //appends the degree:
+    d3.select(".person")
+    .append("p")
+    .text("degree: " + angle)
+    .attr("id", "degreeInfo");
 
-    // var para = document.createElement("p");
-    // var text = document.createTextNode(degree);
-    // var child = para.appendChild(text);
-    // document.getElementById("person").appendChild(child);
-
-    </script>
+    var temp = 3 + parseInt(angle);
+    d3.select(".person")
+    .append("svg")
+    .attr("width", 100)
+    .attr("height", 100)
+    .append("line")
+    .attr("class", "line")
+    .attr("stroke", "rgb(204, 72, 72)")
+    .attr("stroke-width", "3px")
+    .attr("x1", 0)
+    .attr("x2", 90)
+    .attr("y1", 3)
+    .attr("y2", temp);
 
 
+    //append at textInfo:
+    var temp = "Your pelvic is rotated by " + angle + "°."
+    var para = document.createElement("p");
+    var text = document.createTextNode(temp);
+    var child = para.appendChild(text);
+    document.getElementById("textInfo").appendChild(child);
+
+
+  });
 
 
 
-  </body>
-  </html>
+
+  </script>
+
+
+
+
+
+</body>
+</html>

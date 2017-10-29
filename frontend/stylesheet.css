@@ -123,31 +123,49 @@ div{
 }
 img{
   width: auto;
-  height: 500px;
+  height: 400px;
 }
 #person{
   position: absolute;
-  top: 20vh;
-  right: 27vw;
+  left: 22vw;
+  top: 35%;
 }
 #graph{
   position: absolute;
-  left: 13vw;
-  top: 10%;
+  right: 10vw;
+  top: 18%;
 }
 #degreeInfo{
   position: absolute;
   top: 40%;
-  left: 25%;
-  color: #e27260;
+  left: 20%;
+  color: rgb(204, 72, 72);
   font-weight: 600;
+  width: 200px;
 }
 svg{
-  position: fixed;
-  top: 400px;
-  right: 370px;
+  position: absolute;
+  top: 50%;
+  left: 20%;
 }
 .he{
-  padding-left: 100px;
-  font-size: 70px;
+  padding-left: 50px;
+  font-size: 50px;
+}
+.restart{
+  position: fixed;
+  top: 80px;
+  right: 80px;
+  font-weight: 600;
+}
+.restart:hover{
+  color: rgb(204, 72, 72);
+  cursor: pointer;
+  font-style: italic;
+}
+#textInfo{
+  font-size: 30px;
+  position: absolute;
+  top: 25vh;
+  left: 45vw;
 }

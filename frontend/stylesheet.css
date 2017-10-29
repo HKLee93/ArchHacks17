@@ -90,7 +90,7 @@ div{
 }
 .loader-text{
   position: absolute;
-  top: 60%;
+  top: 65%;
   align-self: center;
   margin: auto;
 }
@@ -98,10 +98,13 @@ div{
   content: "M e a s u r i n g";
   font-weight: bold;
   font-size: 20px;
+  opacity: 0;
   animation: loading-text 3s infinite;
+  animation-delay: 7s;
 }
 @keyframes loading-text{
   0% {content: "M"}
+  0% {opacity: 1}
   10%{content: "M e"}
   20%{content: "M e a"}
   30%{content: "M e a s"}
@@ -112,10 +115,51 @@ div{
   80%{content: "M e a s u r i n g "}
   90%{content: "M e a s u r i n g ."}
   100%{content: "M e a s u r i n g . . "}
+  100%{opacity: 1}
 }
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+/*** CALIBRATION PAGE ***/
+.calibration{
+  position: absolute;
+  top: 25%;
+  align-self: center;
+  margin: auto;
+  font-size: 20px;
+  font-weight: 600;
+  animation: disappear 1s forwards;
+  animation-delay: 7s;
+}
+.calibration-counter{
+  font-size: 20px;
+  position: absolute;
+  top: 65%;
+  align-self: center;
+  margin: auto;
+}
+.calibration-counter:after{
+  content: "5";
+  font-weight: bold;
+  font-size: 20px;
+  animation: counter 5s ;
+  animation-fill-mode: forwards;
+  animation-delay: 2s;
+}
+@keyframes disappear{
+  0% {opacity: 0}
+  100% {opacity: 0}
+}
+@keyframes counter{
+  0% {content: "5"}
+  20% {content: "4"}
+  40% {content: "3"}
+  60% {content: "2"}
+  80% {content: "1"}
+  99% {content: "1"}
+  99% {opacity: 1}
+  100% {opacity: 0}
 }
 /*** VISUALIZATION PAGE ***/
 .results{
@@ -164,8 +208,10 @@ svg{
   font-style: italic;
 }
 #textInfo{
-  font-size: 30px;
+  font-size: 25px;
+  width: 450px;
+  font-weight: 600;
   position: absolute;
   top: 25vh;
-  left: 45vw;
+  left: 48vw;
 }

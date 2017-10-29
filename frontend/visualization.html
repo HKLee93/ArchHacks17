@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+<html>
+
 <head>
   <meta charset="utf-8"/>
   <title>Spine</title>
@@ -32,20 +33,23 @@
   var final_x, final_y, angle;
 
   function processData(x_, y_, z_, d){
-    if(d.x == "Xfinal"){
-      final_x = parseFloat(d.y);
+    if(d.xval == -99){
+      final_x = parseFloat(d.yval);
     }
-    else if(d.x == "Yfinal"){
-      final_y = parseFloat(d.y);
+    else if(d.xval == -88){
+      final_y = parseFloat(d.yval);
     }
-    else if(d.x == "anglefinal"){
-      angle = parseFloat(d.y);
+    else if(d.xval == -77){
+      angle = parseFloat(d.yval);
     }
     else{
-      var x = d.x;
-
-      x_.push(parseFloat(x.replace("_", ".")));
-      y_.push(parseFloat(d.y));
+      var xtemp = parseFloat(d.xval) * 100;
+      var ytemp = parseFloat(d.yval) * 100;
+      // console.log(xtemp);
+      x_.push(xtemp);
+      // console.log(d.y);
+      y_.push(ytemp);
+      // console.log(ytemp);
       z_.push((Math.random()*1.0)+0.96);
     }
   }
@@ -54,9 +58,12 @@
 
     //processes given data:
     data.forEach(function (d){
+      console.log(d.xval);
+      console.log(d.yval);
       processData(x_, y_, z_, d);
 
     });
+
 
     //plots the 3-d graph:
     Plotly.plot('graph', [{
@@ -79,12 +86,12 @@
       width: 600,
       scene: {
         xaxis: {
-          // nticks: 8,
-          // range: [-1, 1],
+          nticks: 8,
+          range: [-1, 1],
         },
         yaxis: {
           // nticks: 8,
-          // range: [-1, 1],
+          // range: [-3, 3],
         },
         zaxis: {
           nticks: 8,
@@ -96,10 +103,10 @@
     //appends the degree:
     d3.select(".person")
     .append("p")
-    .text("degree: " + angle)
+    .text("degree: " + angle.toFixed(3))
     .attr("id", "degreeInfo");
 
-    var temp = 3 + parseInt(angle);
+    var temp = 3 + parseFloat(angle);
     d3.select(".person")
     .append("svg")
     .attr("width", 100)
@@ -115,15 +122,30 @@
 
 
     //append at textInfo:
-    var temp = "Your pelvic is rotated by " + angle + "°."
+    var temp = "Your pelvis is rotated by " + angle.toFixed(3) + "°."
     var para = document.createElement("p");
+
+    if(angle > 5 && angle < 14){
+      temp = temp + " You are in a moderate range. You might need some stretching to prevent scoliosis."
+      document.getElementById("textInfo").style.color = "rgb(112, 101, 93)";
+    }
+    else if(angle > 14){
+      temp = temp + " Please consult a doctor. Your pevlis is rotated significantly.";
+      document.getElementById("textInfo").style.color = "rgb(180, 55, 55)";
+    }
+    else{
+      temp = temp + " You are in a normal range."
+      document.getElementById("textInfo").style.color = "rgb(106, 150, 121)";
+    }
+
+
     var text = document.createTextNode(temp);
     var child = para.appendChild(text);
     document.getElementById("textInfo").appendChild(child);
 
 
-  });
 
+  });
 
 
 

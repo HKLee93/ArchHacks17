@@ -1,0 +1,34 @@
+
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Spine</title>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css?v={random number/string}" />
+</head>
+<body>
+
+  <div class="slideA .fade-in">
+    <h1>Welcome to Spine!</h1>
+  </div>
+
+  <div class="slideB .fade-in">
+    <p>
+      I am a virtual assisstant <br />
+      to measure how healthy your spine is.
+    </p>
+  </div>
+
+  <div class="slideC .fade-in">
+    <p>
+      I will be measuring your pelvic roation using Unterberger's test.
+    </p>
+    <p>
+      Instructions: You will be closing your eyes and walking on the spot, while flexing the knees to an angle of 90°. When you are ready, hold the device in one hand, and press the button below.
+    </p>
+    <form action="response.php" method="POST" >
+      <input type="submit" name="start" value="MEASURE" id="measure"/>
+    </form>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css?family=PT+Sans:400,400i,700,700i');
+
+
+/***  GLOBAL ***/
+body{
+  font-family: 'PT Sans', sans-serif;
+  display: flex;
+  flex-direction: column;
+  color: rgb(106, 138, 160);
+  padding: 3vw;
+  margin: 0px;
+  background-color: rgb(241, 242, 243);
+  border: rgb(106, 138, 160) 4vw solid;
+  height: 77.6vh;
+}
+h1{
+  font-size: 100px;
+}
+/*** START PAGE ***/
+.slideA{
+  position: absolute;
+  align-self: center;
+  top: 33%;
+  opacity: 0;
+  font-size: 30px;
+  animation-name: fadeInOut;
+  animation-duration: 3s;
+}
+.slideB{
+  opacity: 0;
+  position: absolute;
+  top: 33%;
+  align-self: center;
+  font-size: 50px;
+  font-weight: 700;
+  animation-name: fadeInOut;
+  animation-duration: 3s;
+  animation-delay: 3s;
+}
+.slideC{
+  opacity: 0;
+  position:absolute;
+  align-self:center;
+  width: 70vw;
+  top: 34%;
+  font-size: 25px;
+  font-weight: 600;
+  animation-name: fadeIn;
+  animation-duration: 3s;
+  animation-delay: 6s;
+  animation-fill-mode: forwards;
+}
+@keyframes fadeInOut {
+  0% {opacity: 0;}
+  70% {opacity: 1;}
+  100% {opacity: 0;}
+}
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+#measure{
+  border-radius: 2px;
+  background:rgba(0,0,0,0);
+  border: 10px solid rgb(106, 138, 160);
+  padding: 8px 16px;
+  color: rgb(106, 138, 160);
+  margin: auto;
+  align-self: center;
+  width:150px;
+  font-size: 14px;
+}
+#measure:hover, #measure:focus{
+  background: rgb(106, 138, 160);
+  color: rgb(241, 242, 243);
+  outline:none;
+  cursor: pointer;
+}
+div{
+  margin: auto;
+}
+/***  LOADING PAGE  ***/
+.loader {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid rgb(106, 138, 160); /* Blue */
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  animation: spin 2s linear infinite;
+}
+.loader-text{
+  position: absolute;
+  top: 60%;
+  align-self: center;
+  margin: auto;
+}
+.loader-text:after{
+  content: "M e a s u r i n g";
+  font-weight: bold;
+  font-size: 20px;
+  animation: loading-text 3s infinite;
+}
+@keyframes loading-text{
+  0% {content: "M"}
+  10%{content: "M e"}
+  20%{content: "M e a"}
+  30%{content: "M e a s"}
+  40%{content: "M e a s u"}
+  50%{content: "M e a s u r "}
+  60%{content: "M e a s u r i "}
+  70%{content: "M e a s u r i n "}
+  80%{content: "M e a s u r i n g "}
+  90%{content: "M e a s u r i n g ."}
+  100%{content: "M e a s u r i n g . . "}
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+/*** VISUALIZATION PAGE ***/
+.results{
+  height: 80%;
+}
+img{
+  width: auto;
+  height: 500px;
+}
+#person{
+  position: absolute;
+  top: 20vh;
+  right: 27vw;
+}
+#graph{
+  position: absolute;
+  left: 13vw;
+  top: 10%;
+}
+#degreeInfo{
+  position: absolute;
+  top: 40%;
+  left: 25%;
+  color: #e27260;
+  font-weight: 600;
+}
+svg{
+  position: fixed;
+  top: 400px;
+  right: 370px;
+}
+.he{
+  padding-left: 100px;
+  font-size: 70px;
+}

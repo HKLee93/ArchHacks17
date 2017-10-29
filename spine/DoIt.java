@@ -1,17 +1,38 @@
 package spine;
 import java.util.concurrent.*;
 import spine.ComputeCenter;
-import spine.CallableThread;
 import java.lang.Exception;
 
 
 
 public class DoIt{
+	
+	public static Callable<dataPacket> getDataPacketCallable(ComputeCenter c){
+		return new Callable<dataPacket>(){
+			public dataPacket call() throws Exception{
+				return c.test();
+			}
+		};
+	}
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws ExecutionException, InterruptedException {
 
 		//ThreadFactory threadFactory = new SimpleThreadFactory();
-		ComputeCenter machine1 = new ComputeCenter("COM3","aaa");	
+		final ComputeCenter machine1 = new ComputeCenter("COM3","aaa");	
+		final ComputeCenter machine2 = new ComputeCenter("COM4","bbb");
+		
+		final Callable<dataPacket> callable1 = getDataPacketCallable(machine1);
+		final Callable<dataPacket> callable2 = getDataPacketCallable(machine2);
+		final ExecutorService service = Executors.newFixedThreadPool(2);
+		final Future<dataPacket> result1 = service.submit(callable1);
+		final Future<dataPacket> result2 = service.submit(callable2);
+		final dataPacket r1 = result1.get();
+		final dataPacket r2 = result2.get();
+		
+		
+		
+		
+		
 		
 		/*
 		ComputeCenter machine2 = new ComputeCenter("COM4","aaa");	
@@ -36,9 +57,8 @@ public class DoIt{
 		}
 		*/
 		
-		dataPacket lalala = machine1.test();
-		
-		System.out.println(lalala.x+","+lalala.y+","+lalala.z+","+lalala.time);
+		System.out.println(r1.toString());
+		System.out.println(r2.toString());
 
 
 

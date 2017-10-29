@@ -70,7 +70,7 @@ public class ComputeCenter{
 						int thirdZ = this.port.readByte()& 0xff;
 						int fourthZ = this.port.readByte()& 0xff;
 						z = Float.intBitsToFloat((firstZ<<24)+(secondZ<<16)+(thirdZ<<8)+fourthZ);
-						System.out.println(x+","+y+","+z+","+((timestamp/(float)1000.0)));
+						System.out.println(this.port.getName()+" : "+x+","+y+","+z+","+((timestamp/(float)1000.0)));
 						dataVec.add(new dataPacket(x,y,z,(timestamp/(float)1000.0)));
 						if(gotIn){
 							endTime = temp;
@@ -98,7 +98,7 @@ public class ComputeCenter{
 		ySum /= input.size();
 		zSum /= input.size();
 		
-		System.out.println("The normal inertia is: "+xSum+","+ySum+","+zSum);
+		System.out.println(this.port.getName()+" : The normal inertia is: "+xSum+","+ySum+","+zSum);
 		
 		return new dataPacket(xSum, ySum, zSum, input.get(input.size()-1).time);
 	}
@@ -135,7 +135,7 @@ public class ComputeCenter{
 		System.out.println();
 		System.out.println();
 		for(int i=1;i<temp.size();++i){
-			System.out.println(temp.get(i).toString());
+			System.out.println(this.port.getName()+" : "+temp.get(i).toString());
 			float deltaX = (temp.get(i).x+temp.get(i-1).x)/2;
 			float delatY = (temp.get(i).y+temp.get(i-1).y)/2;
 			float deltaZ = (temp.get(i).z+temp.get(i-1).z)/2;
@@ -171,14 +171,14 @@ public class ComputeCenter{
 		dataPacket inertia = new dataPacket(0,0,0,0);
 		dataPacket result = new dataPacket(0,0,0,0);
 		
-		System.out.println("Measuring Inertia...");
+		System.out.println(this.port.getName()+" : Measuring Inertia...");
 		System.out.println();
 		
 		if(this.currentState==status.INERTIA){
 			inertia = this.measureInertia(this.getInfo(5));
 		}
 		System.out.println();
-		System.out.println("Time to readjust yourself...");
+		System.out.println(this.port.getName()+" : Time to readjust yourself...");
 		System.out.println();
 		try {
 			Thread.sleep(1000);
@@ -186,7 +186,7 @@ public class ComputeCenter{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Calibrating Measures");
+		System.out.println(this.port.getName()+" : Calibrating Measures");
 		this.currentState = status.MEASURE;
 		
 		if(this.currentState==status.MEASURE){

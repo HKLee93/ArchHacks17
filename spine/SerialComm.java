@@ -6,10 +6,12 @@ import jssc.SerialPortException;
 public class SerialComm {
 
 	SerialPort port;
+	String name;
 	boolean debug;
 
 	public SerialComm(String name, boolean input) {
 		port = new SerialPort(name);
+		this.name = name;
 		this.debug = input;
 		try {
 			port.openPort();
@@ -72,6 +74,10 @@ public class SerialComm {
 			}
 		}
 
+	}
+	
+	public String getName(){
+		return this.name;
 	}
 	
 	public void writeByte(byte input){

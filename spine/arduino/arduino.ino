@@ -1,12 +1,27 @@
 #include <Wire.h>
 #include <SparkFun_MMA8452Q.h>
 MMA8452Q accel;
+
+unsigned int threshold = 30;
+unsigned int bufferSize =10;
 unsigned long counter = 0;
 unsigned long deltaTime = 1;
+boolean firstFlag = false;
+unsigned int arbitraryC = 0;
+float  xSlots[10];
+float  ySlots[10];
+float  zSlots[10];
+float xAverage=0;
+float yAverage=0;
+float zAverage=0;
 unsigned int cccc = 0;
 float xAccel = 0;
 float yAccel = 0;
 float zAccel = 0;
+float x = 0;
+float y = 0;
+float z = 0;
+
 
 void setup(){
   Serial.begin(9600);
@@ -17,11 +32,14 @@ void setup(){
 void loop(){
     unsigned long timestamp = millis();
     if((timestamp-counter)>deltaTime){
-        sendAccel(timestamp,cccc);
-        cccc = cccc+1;
-        counter = counter + deltaTime;
-        if(cccc>=10){
-          cccc=0;
+        boolean check = sendAccel(timestamp);
+        if(check){
+          cccc = cccc+1;
+          arbitraryC += 1;
+          counter = counter + deltaTime;
+          if(cccc>=bufferSize){
+            cccc=0;
+          }
         }
     }
 
@@ -48,35 +66,225 @@ void pprint(int xAccel,int yAccel, int zAccel){
   Serial.println(newZ);
 }
 
-void sendAccel(unsigned long timestamp, unsigned int cccc){
+boolean printAccel(unsigned long timestamp){
+  Serial.print("a");
    if(accel.available()){
     accel.read();
-    xAccel += accel.cx;
-    yAccel += accel.cy;
-    zAccel += accel.cz;
-    if(cccc==9){
-      float totalX=xAccel/10;
-      float totalY=yAccel/10;
-      float totalZ=zAccel/10;
+    x = accel.cx;
+    y = accel.cy;
+    z = accel.cz;
+
+    if(arbitraryC>(bufferSize-1)){
+      firstFlag=true;
+    }
+
+    if(arbitraryC==0){
+      xAverage=x;
+      yAverage=y;
+      zAverage=z;
+    }
+
+    if(abs(x)>threshold*abs(xAverage)){
+      /*
+      Serial.print("a");
+      Serial.print("\n");
+      Serial.print(x);
+      Serial.print(",");
+      Serial.print(xAverage);
+      Serial.print("\n");
+      */
+      return false;
+    }
+    else if(abs(y)>threshold*abs(yAverage)){
+      /*
+      Serial.print("b");
+      Serial.print("\n");
+      Serial.print(y);
+      Serial.print(",");
+      Serial.print(yAverage);
+      Serial.print("\n");
+      */
+      return false;
+    }
+    
+
+    
+    if(!firstFlag){
+      xSlots[arbitraryC] = x;
+      ySlots[arbitraryC] = y;
+      zSlots[arbitraryC] = z;
+      xAverage=0.0;
+      yAverage=0.0;
+      zAverage=0.0;
+      for(int i=0;i<=arbitraryC;++i){
+        xAverage += xSlots[i];
+        yAverage += ySlots[i];
+        zAverage += zSlots[i];
+      }
+      xAverage = xAverage/(arbitraryC+1);
+      yAverage = yAverage/(arbitraryC+1);
+      zAverage = zAverage/(arbitraryC+1);
+      arbitraryC += 1;
+    }
+    else{
+      xSlots[cccc] = x;
+      ySlots[cccc] = y;
+      zSlots[cccc] = z;
+      xAverage=0.0;
+      yAverage=0.0;
+      zAverage=0.0;
+      for(int i=0;i<bufferSize;++i){
+        xAverage += xSlots[i];
+        yAverage += ySlots[i];
+        zAverage += zSlots[i];
+      }
+      xAverage = xAverage/bufferSize;
+      yAverage = yAverage/bufferSize;
+      zAverage = zAverage/bufferSize;
+    }
+
+
+       
+    xAccel += x;
+    yAccel += y;
+    zAccel += z;
+    if(cccc==(bufferSize-1)){
+      Serial.print("!");
+      Serial.print("0");
+      Serial.print(timestamp);
+      Serial.print(",");
+      Serial.print(xAverage);
+      Serial.print(",");
+      Serial.print(yAverage);
+      Serial.print(",");
+      Serial.print(zAverage);
+      Serial.print("\n");
+      xAccel = 0;
+      yAccel = 0;
+      zAccel = 0;
+    }
+    return true;
+  } 
+  else{
+    /*
+    Serial.print("e");
+      Serial.print("\n");
+      */
+    return false;
+  }
+}
+
+boolean sendAccel(unsigned long timestamp){
+   if(accel.available()){
+    accel.read();
+    x = accel.cx;
+    y = accel.cy;
+    z = accel.cz;
+
+    if(arbitraryC>(bufferSize-1)){
+      firstFlag=true;
+    }
+
+    if(arbitraryC==0){
+      xAverage=x;
+      yAverage=y;
+      zAverage=z;
+    }
+
+    if(abs(x)>threshold*abs(xAverage)){
+      /*
+      Serial.print("a");
+      Serial.print("\n");
+      Serial.print(x);
+      Serial.print(",");
+      Serial.print(xAverage);
+      Serial.print("\n");
+      */
+      return false;
+    }
+    else if(abs(y)>threshold*abs(yAverage)){
+      /*
+      Serial.print("b");
+      Serial.print("\n");
+      Serial.print(y);
+      Serial.print(",");
+      Serial.print(yAverage);
+      Serial.print("\n");
+      */
+      return false;
+    }
+    else if(abs(z)>threshold*abs(zAverage)){
+      /*
+      Serial.print("c");
+      Serial.print("\n");
+      Serial.print(z);
+      Serial.print(",");
+      Serial.print(zAverage);
+      Serial.print("\n");
+      */
+      return false;
+    }  
+
+    
+    if(!firstFlag){
+      xSlots[arbitraryC] = x;
+      ySlots[arbitraryC] = y;
+      zSlots[arbitraryC] = z;
+      xAverage=0.0;
+      yAverage=0.0;
+      zAverage=0.0;
+      for(int i=0;i<=arbitraryC;++i){
+        xAverage += xSlots[i];
+        yAverage += ySlots[i];
+        zAverage += zSlots[i];
+      }
+      xAverage = xAverage/(arbitraryC+1);
+      yAverage = yAverage/(arbitraryC+1);
+      zAverage = zAverage/(arbitraryC+1);
+      arbitraryC += 1;
+    }
+    else{
+      xSlots[cccc] = x;
+      ySlots[cccc] = y;
+      zSlots[cccc] = z;
+      xAverage=0.0;
+      yAverage=0.0;
+      zAverage=0.0;
+      for(int i=0;i<bufferSize;++i){
+        xAverage += xSlots[i];
+        yAverage += ySlots[i];
+        zAverage += zSlots[i];
+      }
+      xAverage = xAverage/bufferSize;
+      yAverage = yAverage/bufferSize;
+      zAverage = zAverage/bufferSize;
+    }
+
+
+       
+    xAccel += x;
+    yAccel += y;
+    zAccel += z;
+    if(cccc==(bufferSize-1)){
       Serial.write("!");
       Serial.write("0");
       Serial.write(timestamp >> 24);
       Serial.write(timestamp >> 16);
       Serial.write(timestamp >> 8);
       Serial.write(timestamp);
-      unsigned long rawX = *(unsigned long *) & totalX;
+      unsigned long rawX = *(unsigned long *) & xAverage;
       Serial.write(rawX>>24);
       Serial.write(rawX>>16);
       Serial.write(rawX>>8);
       Serial.write(rawX);
       Serial.write(",");
-      unsigned long rawY = *(unsigned long *) & totalY;
+      unsigned long rawY = *(unsigned long *) & yAverage;
       Serial.write(rawY>>24);
       Serial.write(rawY>>16);
       Serial.write(rawY>>8);
       Serial.write(rawY);
       Serial.write(",");
-      unsigned long rawZ = *(unsigned long *) & totalZ;
+      unsigned long rawZ = *(unsigned long *) & zAverage;
       Serial.write(rawZ>>24);
       Serial.write(rawZ>>16);
       Serial.write(rawZ>>8);
@@ -85,5 +293,13 @@ void sendAccel(unsigned long timestamp, unsigned int cccc){
       yAccel = 0;
       zAccel = 0;
     }
-  }  
+    return true;
+  } 
+  else{
+    /*
+    Serial.print("e");
+      Serial.print("\n");
+      */
+    return false;
+  }
 }

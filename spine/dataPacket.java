@@ -1,3 +1,9 @@
+/*
+ * This class gives a structure
+ * which contains x,y,z, and time values
+ * in one place.
+ */
+
 package spine;
 
 public class dataPacket {

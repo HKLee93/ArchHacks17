@@ -85,25 +85,9 @@ boolean printAccel(unsigned long timestamp){
     }
 
     if(abs(x)>threshold*abs(xAverage)){
-      /*
-      Serial.print("a");
-      Serial.print("\n");
-      Serial.print(x);
-      Serial.print(",");
-      Serial.print(xAverage);
-      Serial.print("\n");
-      */
       return false;
     }
     else if(abs(y)>threshold*abs(yAverage)){
-      /*
-      Serial.print("b");
-      Serial.print("\n");
-      Serial.print(y);
-      Serial.print(",");
-      Serial.print(yAverage);
-      Serial.print("\n");
-      */
       return false;
     }
     
@@ -142,12 +126,6 @@ boolean printAccel(unsigned long timestamp){
       yAverage = yAverage/bufferSize;
       zAverage = zAverage/bufferSize;
     }
-
-
-       
-    xAccel += x;
-    yAccel += y;
-    zAccel += z;
     if(cccc==(bufferSize-1)){
       Serial.print("!");
       Serial.print("0");
@@ -159,17 +137,10 @@ boolean printAccel(unsigned long timestamp){
       Serial.print(",");
       Serial.print(zAverage);
       Serial.print("\n");
-      xAccel = 0;
-      yAccel = 0;
-      zAccel = 0;
     }
     return true;
   } 
   else{
-    /*
-    Serial.print("e");
-      Serial.print("\n");
-      */
     return false;
   }
 }
@@ -192,36 +163,12 @@ boolean sendAccel(unsigned long timestamp){
     }
 
     if(abs(x)>threshold*abs(xAverage)){
-      /*
-      Serial.print("a");
-      Serial.print("\n");
-      Serial.print(x);
-      Serial.print(",");
-      Serial.print(xAverage);
-      Serial.print("\n");
-      */
       return false;
     }
     else if(abs(y)>threshold*abs(yAverage)){
-      /*
-      Serial.print("b");
-      Serial.print("\n");
-      Serial.print(y);
-      Serial.print(",");
-      Serial.print(yAverage);
-      Serial.print("\n");
-      */
       return false;
     }
     else if(abs(z)>threshold*abs(zAverage)){
-      /*
-      Serial.print("c");
-      Serial.print("\n");
-      Serial.print(z);
-      Serial.print(",");
-      Serial.print(zAverage);
-      Serial.print("\n");
-      */
       return false;
     }  
 
@@ -260,11 +207,6 @@ boolean sendAccel(unsigned long timestamp){
       zAverage = zAverage/bufferSize;
     }
 
-
-       
-    xAccel += x;
-    yAccel += y;
-    zAccel += z;
     if(cccc==(bufferSize-1)){
       Serial.write("!");
       Serial.write("0");
@@ -289,17 +231,10 @@ boolean sendAccel(unsigned long timestamp){
       Serial.write(rawZ>>16);
       Serial.write(rawZ>>8);
       Serial.write(rawZ);
-      xAccel = 0;
-      yAccel = 0;
-      zAccel = 0;
     }
     return true;
   } 
   else{
-    /*
-    Serial.print("e");
-      Serial.print("\n");
-      */
     return false;
   }
 }

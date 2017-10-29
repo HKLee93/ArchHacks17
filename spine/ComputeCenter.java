@@ -1,3 +1,10 @@
+/*
+ * This class gets input from accelerometers,
+ * and does all the complex computations 
+ * including double integration, angle computation, etc.
+ * 
+ */
+
 package spine;
 
 import java.util.Vector;
@@ -26,8 +33,6 @@ public class ComputeCenter{
 		long endTime = 0;
 		Vector<dataPacket> dataVec = new Vector<dataPacket>();
 		while((endTime-startTime)<range){
-
-			//System.out.println(endTime-startTime);
 			if(this.port.available()){
 				float x,y,z,timestamp;
 				switch(this.port.readByte()){
@@ -75,11 +80,6 @@ public class ComputeCenter{
 						}
 					}
 				}
-
-			}
-			else{
-				//throw new java.lang.Error("Error: Connection Not Available");
-				//System.out.println("Error: Connection Not Available");
 			}
 		}		
 		return dataVec;
@@ -192,18 +192,9 @@ public class ComputeCenter{
 			result.add(this.dataProcess(result, inertia));
 		}
 		
-		/*
-		System.out.println();
-		System.out.println();
-		System.out.println(result.x+","+result.y+","+result.z+","+result.time);
-		*/
-		
 		return result;
 	}
 
-	public void send(){
-
-	}
 
 
 }

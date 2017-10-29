@@ -1,3 +1,12 @@
+/*
+ * This is the class that initiates, maintains, 
+ * and get accelerometer information from
+ * Arduino to PC.
+ * 
+ * We used SerialPort from jssc.jar file
+ * to implement this class.
+ */
+
 package spine;
 
 import jssc.SerialPort;

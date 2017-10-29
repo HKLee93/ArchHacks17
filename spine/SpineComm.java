@@ -1,3 +1,13 @@
+/*
+ * SpineComm.java
+ * Contains two methods that communicate with php file on amazon ec2.
+ * 
+ * dataToServer(): collect data from accelerometers and store them in Map. 
+ * Encode the map into byte and send to php file on remote server.
+ * 
+ * serverToLocal(): keep checking the status on server whether a user has initiated the measurement or not. 
+ */
+
 package spine;
 
 import java.util.*;
@@ -27,15 +37,18 @@ public class SpineComm {
 		HttpURLConnection connect = (HttpURLConnection) web.openConnection();
 		Map<String,Object> params = new LinkedHashMap<>();
 		
-		params.put("X","Y\n");
+		//column label
+		params.put("xval","yval\n");
 		
+		//put x and y value into a map in pair
 		for(int i=0;i<input.size();++i){
-			params.put(String.format("%.10f",input.get(i).x), String.format("%.10f",input.get(i).y)+"\n");
+			params.put(String.format("%.10f",input.get(i).x),String.format("%.10f",input.get(i).y)+"\n");
 		}
-		params.put("Xfinal",String.format("%.10f",result.x)+"\n");
-		params.put("Yfinal",String.format("%.10f",result.y)+"\n");
-		params.put("anglefinal",String.format("%.10f",result.z)+"\n");
-		params.put("timefinal",String.format("%.10f",result.time)+"\n");
+		
+		//put final calculated value
+		params.put("-99",String.format("%.10f",result.x)+"\n");
+		params.put("-88",String.format("%.10f",result.y)+"\n");
+		params.put("-77",String.format("%.10f",result.z));
 		
 		
 	    StringBuilder postData = new StringBuilder();
@@ -52,7 +65,8 @@ public class SpineComm {
 	    }
 
 	    byte[] dataToByte = postData.toString().getBytes("UTF-8");
-
+	    
+	    //set method to POST
 	    String type = "application/x-www-form-urlencoded";
 	    int len = dataToByte.length;
 	    connect.setRequestMethod("POST");
@@ -60,10 +74,11 @@ public class SpineComm {
 	    connect.setRequestProperty("Content-Length", String.valueOf(len));
 	    connect.setDoOutput(true);
 	    connect.getOutputStream().write(dataToByte);
-
+	    
 	    InputStreamReader isr = new InputStreamReader(connect.getInputStream(), "UTF-8");
 	    BufferedReader br2 = new BufferedReader(isr);
-
+	    
+	    //return value from the server
 	    for (int c; (c = br2.read()) >= 0;) {
 	    
 	        System.out.print((char) c);
@@ -78,6 +93,8 @@ public class SpineComm {
 			URL web = new URL(this.ec2_path+url);
 			URLConnection connect = web.openConnection();
 			BufferedReader br = new BufferedReader(new InputStreamReader(connect.getInputStream()));
+			
+			//keep reading the value(initially "false" on server until it changes to "true"
 			String line = br.readLine();
 			System.out.println(line);
 			if(line.compareTo("true") == 0) {

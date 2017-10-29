@@ -1,3 +1,12 @@
+/*
+ * Using LinearRegression java class 
+ * implemented by Robert Sedgewick and Kevin Wayne
+ * from Princeton University.
+ * 
+ * Modified by Ryun Han to implement
+ * Vectors of dataPackets.
+ */
+
 package spine;
 import spine.dataPacket;
 
@@ -17,12 +26,11 @@ public class LinearRegression {
 		float[] x = new float[N];
 		float[] y = new float[N];
 
-		float sumx = 0, sumy = 0, sumx2 = 0;
+		float sumx = 0, sumy = 0;
 		for(int i=0;i<input.size();++i){
 			x[i] = input.get(i).time;
 			y[i] = input.get(i).x;
 			sumx += x[i];
-			sumx2 += x[i]*x[i];
 			sumy += y[i];
 		}
 
@@ -51,12 +59,11 @@ public class LinearRegression {
 		float[] x = new float[N];
 		float[] y = new float[N];
 
-		float sumx = 0, sumy = 0, sumx2 = 0;
+		float sumx = 0, sumy = 0;
 		for(int i=0;i<input.size();++i){
 			x[i] = input.get(i).time;
 			y[i] = input.get(i).y;
 			sumx += x[i];
-			sumx2 += x[i]*x[i];
 			sumy += y[i];
 		}
 

@@ -12,12 +12,10 @@ enum status{
 public class ComputeCenter{
 
 	final private SerialComm port;
-	final String url;
 	status currentState;
 
-	public ComputeCenter(String name, String url){
+	public ComputeCenter(String name){
 		this.port = new SerialComm(name, true);
-		this.url = url;
 		this.currentState = status.INERTIA;
 	}
 
@@ -109,7 +107,6 @@ public class ComputeCenter{
 			input.get(i).y=input.get(i).y-inertia.y;
 			input.get(i).z=input.get(i).z-inertia.z;	
 		}
-		
 		return input;
 	}
 
@@ -167,9 +164,9 @@ public class ComputeCenter{
 		
 	}
 
-	public dataPacket test(){
+	public Vector<dataPacket> test(){
 		dataPacket inertia = new dataPacket(0,0,0,0);
-		dataPacket result = new dataPacket(0,0,0,0);
+		Vector<dataPacket> result = new Vector<dataPacket>();
 		
 		System.out.println(this.port.getName()+" : Measuring Inertia...");
 		System.out.println();
@@ -191,7 +188,8 @@ public class ComputeCenter{
 		
 		if(this.currentState==status.MEASURE){
 			//result = this.measureDistance(this.getInfo(20),inertia);
-			result = this.dataProcess(this.getInfo(20), inertia);
+			result = this.getInfo(20);
+			result.add(this.dataProcess(result, inertia));
 		}
 		
 		/*

@@ -3,8 +3,8 @@
 This is an app that lets you measure how rotated your pelvis is using Unterberger's test
 
 # # Prizes
-**Biggest World Impact by HealthX Ventures**
-**Honerable Mention - Best Overall Hack**
+**Biggest World Impact by HealthX Ventures**  
+**Honerable Mention - Best Overall Hack**  
 **Best Domain Name from Domain.com (yourwalletspine.com)**
 
 > Details can be found in [here](https://devpost.com/software/spine)
